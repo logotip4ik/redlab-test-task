@@ -1,6 +1,13 @@
 <script setup>
+import { onBeforeUnmount, onMounted } from '@vue/runtime-core';
 import NavLogo from '../assets/images/nav-logo.svg';
 import NavMenu from '../assets/images/nav-menu.svg';
+
+import useGsap from '../hooks/use-gsap';
+
+const nav = ref(null);
+
+const { gsap, ScrollTrigger } = useGsap();
 
 const navLinks = [
   'После ремонта',
@@ -8,10 +15,36 @@ const navLinks = [
   'Регулярная уборка',
   'Мойка окон',
 ];
+
+onMounted(() => {
+  const transition = gsap.fromTo(
+    nav.value,
+    {
+      backgroundColor: 'transparent',
+      boxShadow: '0rem 0.25rem 1rem 0rem rgba(0, 0, 0, 0.0)',
+    },
+    {
+      backgroundColor: 'white',
+      boxShadow: '0rem 0.25rem 1rem 0rem rgba(0, 0, 0, 0.035)',
+      duration: 0.2,
+
+      scrollTrigger: {
+        trigger: '.header',
+        start: '10% top+=50px',
+        end: '10% top+=50px',
+        toggleActions: 'play none reverse none',
+      },
+    }
+  );
+
+  onBeforeUnmount(() => {
+    transition.scrollTrigger.kill();
+  });
+});
 </script>
 
 <template>
-  <div class="nav">
+  <nav ref="nav" class="nav">
     <div class="nav__column nav__column--heading">
       <NavLogo class="nav__logo" />
       <Utils-VToggle class="nav__toggle">
@@ -41,7 +74,7 @@ const navLinks = [
         <NavMenu class="nav__menu-button__svg" />
       </button>
     </div>
-  </div>
+  </nav>
 </template>
 
 <style lang="scss">
@@ -68,7 +101,7 @@ const navLinks = [
 
   width: 100%;
 
-  padding: 1.25rem clamp(1rem, 1.25vw, 2rem);
+  padding: 1rem clamp(1rem, 1.25vw, 2rem);
 
   &__column {
     &--heading {
