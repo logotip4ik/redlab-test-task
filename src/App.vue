@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-  <div>Hello world</div>
+  <VHeader />
 </template>
 
 <style></style>
