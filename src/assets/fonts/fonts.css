@@ -3,7 +3,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./TTTravels-Regular.ttf') format('ttf');
+  src: url('./TTTravels-Regular.ttf') format('truetype');
 }
 
 @font-face {
@@ -11,5 +11,5 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('./TTTravels-Medium.ttf') format('ttf');
+  src: url('./TTTravels-Medium.ttf') format('truetype');
 }
