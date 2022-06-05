@@ -4,5 +4,11 @@ import AutoImport from 'unplugin-auto-import/vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [Vue(), AutoImport({ dts: true })],
+  plugins: [
+    Vue(),
+    AutoImport({
+      dirs: ['./src/hooks', './src/composables'],
+      imports: ['vue'],
+    }),
+  ],
 });
