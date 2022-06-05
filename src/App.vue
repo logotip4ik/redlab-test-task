@@ -1,7 +1,6 @@
 <script setup></script>
 
 <template>
+  <VNavbar />
   <VHeader />
 </template>
-
-<style></style>
