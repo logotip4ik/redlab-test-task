@@ -32,8 +32,7 @@
   justify-content: center;
   align-items: stretch;
 
-  min-height: 90vh;
-  max-height: 98vh;
+  height: 100vh;
 
   &__column {
     flex-grow: 1;
