@@ -76,7 +76,7 @@ onMounted(() => {
     padding: 0.1rem 0.5rem;
     pointer-events: none;
 
-    transition: color 0.2s;
+    transition: color 0.1s;
 
     &--active {
       color: white;
@@ -102,7 +102,7 @@ onMounted(() => {
 
     &--toggled {
       left: calc(100% - var(--slider-width) - 0.15rem);
-      transition-duration: 0.1s;
+      transition-duration: 0.085s;
     }
   }
 }
