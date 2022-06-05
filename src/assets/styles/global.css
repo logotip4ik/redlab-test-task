@@ -11,6 +11,7 @@
   --step-5: clamp(2.8rem, calc(1.29rem + 7.56vw), 6.68rem);
 
   --ff-color: #404040;
+  --primary-color: #5a30f0;
 }
 
 * {
