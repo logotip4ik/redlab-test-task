@@ -53,12 +53,12 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
 
-  position: fixed;
+  position: relative;
   z-index: 2;
 
   width: min-content;
 
-  padding: 0.175rem;
+  padding: 0.4rem 0.175rem;
 
   border-radius: 9999px;
   background-color: #ffffff;
@@ -91,7 +91,7 @@ onMounted(() => {
     margin-left: 0;
 
     width: calc(var(--slider-width) - 0.1rem);
-    height: calc(100% - 0.25rem);
+    height: calc(100% - 0.5rem);
 
     transition: left 0.2s;
 
