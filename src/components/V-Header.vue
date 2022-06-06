@@ -67,6 +67,10 @@ onMounted(() => {
       align-items: center;
 
       padding-inline: 7.5vw 1rem;
+
+      @media screen and (max-width: 750px) {
+        padding-inline: 7.5vw 7.5vw;
+      }
     }
   }
 
@@ -78,11 +82,8 @@ onMounted(() => {
 
     object-fit: cover;
 
-    &__wrapper {
-      width: 100%;
-      height: 100%;
-
-      overflow: hidden;
+    @media screen and (max-width: 750px) {
+      max-height: 50vh;
     }
   }
 
@@ -114,6 +115,18 @@ onMounted(() => {
 
       opacity: 0;
     }
+
+    @media screen and (max-width: 750px) {
+      width: 100%;
+
+      margin-bottom: 2rem;
+    }
+  }
+
+  @media screen and (max-width: 750px) {
+    flex-direction: column-reverse;
+
+    padding: 5rem 0 0;
   }
 }
 </style>
