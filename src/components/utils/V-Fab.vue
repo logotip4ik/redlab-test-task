@@ -28,6 +28,11 @@ function magnetFab({ clientX, clientY }) {
     '--outline-offset-x': `${magnetX * (coefficient - 0.4)}px`,
     '--outline-offset-y': `${magnetY * (coefficient - 0.4)}px`,
   });
+
+  gsap.to(fabRef.value.children, {
+    x: magnetX * (coefficient - 0.1),
+    y: magnetY * (coefficient - 0.1),
+  });
 }
 
 function resetFab() {
@@ -40,6 +45,7 @@ function resetFab() {
     '--br-color': 'transparent',
     ease: 'expo.out',
   });
+  gsap.to(fabRef.value.children, { x: 0, y: 0 });
 }
 
 watch(isActive, (val) => {
@@ -125,7 +131,9 @@ onMounted(() => {
     @focus="() => toggleIsActive()"
     @blur="() => toggleIsActive()"
   >
-    <slot />
+    <p class="fab__text">
+      <slot />
+    </p>
   </button>
 </template>
 
@@ -150,6 +158,10 @@ onMounted(() => {
   background-color: var(--primary-color);
 
   cursor: pointer;
+
+  &__text {
+    display: inline-block;
+  }
 
   &::after {
     content: '';
