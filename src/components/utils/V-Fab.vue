@@ -102,11 +102,12 @@ onMounted(() => {
           duration: 0.2,
         }),
       onLeaveBack: () =>
-        gsap.fromTo(
-          fabRef.value,
-          { scale: 0, yPercent: 55, rotate: 90 },
-          { scale: 0.75, yPercent: 45, rotate: 15, ease: 'back.out' }
-        ),
+        gsap.to(fabRef.value, {
+          scale: 0.75,
+          yPercent: 45,
+          rotate: 15,
+          ease: 'back.out',
+        }),
     })
   );
 
