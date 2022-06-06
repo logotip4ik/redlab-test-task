@@ -62,7 +62,7 @@ onMounted(() => {
         :key="key"
         class="info-list__card"
       >
-        <p class="info-list__card__title">{{ card.title }}</p>
+        <h2 class="info-list__card__title">{{ card.title }}</h2>
         <img
           :src="card.image"
           :alt="card.title"
