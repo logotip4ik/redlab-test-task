@@ -69,7 +69,8 @@ onMounted(() => {
     position: relative;
     z-index: 4;
 
-    font-size: calc(var(--step--2));
+    font-size: calc(var(--step--2) - 0.175rem);
+    font-weight: 500;
     color: #636c81;
     white-space: nowrap;
 
@@ -93,7 +94,7 @@ onMounted(() => {
     margin-left: 0;
 
     width: calc(var(--slider-width) - 0.1rem);
-    height: calc(100% - 0.5rem);
+    height: calc(100% - 0.4rem);
 
     transition: left 0.2s;
 
