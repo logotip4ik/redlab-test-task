@@ -5,4 +5,5 @@
   <VHeader />
   <Utils-VFab>Заказать<br />уборку</Utils-VFab>
   <VInfoList />
+  <VInfoGallery />
 </template>
