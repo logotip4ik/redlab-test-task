@@ -96,7 +96,7 @@ onMounted(() => {
 
       white-space: nowrap;
 
-      margin-block: 0 2rem;
+      margin-block: 0 1.5rem;
 
       &__line {
         display: block;
