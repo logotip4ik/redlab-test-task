@@ -62,8 +62,8 @@ watch(isActive, (val) => {
 onMounted(() => {
   gsap.fromTo(
     fabRef.value,
-    { xPercent: 0, yPercent: 100, rotate: 0, '--outline-scale': 0.95 },
-    { xPercent: -50, yPercent: 0, rotate: -15, ease: 'back.out' }
+    { xPercent: -50, yPercent: 100, rotate: 0, '--outline-scale': 0.95 },
+    { yPercent: 0, rotate: -15, ease: 'back.out' }
   );
 
   const trigger = ScrollTrigger.create({
