@@ -154,6 +154,9 @@ onMounted(() => {
   width: var(--fab-size);
   height: var(--fab-size);
 
+  min-width: 6rem;
+  min-height: 6rem;
+
   border: none;
   border-radius: 9999px;
   background-color: var(--primary-color);
