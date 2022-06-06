@@ -98,7 +98,7 @@ onMounted(() => {
     position: relative;
 
     width: 100%;
-    max-width: 320px;
+    max-width: 330px;
 
     border-radius: 0.5rem;
     background-color: #f3f6fb;
@@ -169,10 +169,24 @@ onMounted(() => {
         }
       }
     }
+
+    @media screen and (max-width: 1120px) {
+      max-width: 360px;
+    }
   }
 
   &__section {
     padding: 7rem clamp(1rem, 3vw, 3rem);
+  }
+
+  @media screen and (max-width: 1120px) {
+    grid-template-columns: repeat(2, minmax(250px, 1fr));
+    grid-template-rows: repeat(2, 1fr);
+  }
+
+  @media screen and (max-width: 565px) {
+    grid-template-columns: repeat(1, minmax(250px, 1fr));
+    grid-template-rows: repeat(4, 1fr);
   }
 }
 </style>
