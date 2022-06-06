@@ -17,28 +17,41 @@ const navLinks = [
 ];
 
 onMounted(() => {
-  const transition = gsap.fromTo(
-    nav.value,
-    {
-      backgroundColor: 'transparent',
-      boxShadow: '0rem 0.25rem 1rem 0rem rgba(0, 0, 0, 0.0)',
-    },
-    {
-      backgroundColor: 'white',
-      boxShadow: '0rem 0.25rem 1rem 0rem rgba(0, 0, 0, 0.035)',
-      duration: 0.2,
+  const transitions = [];
 
-      scrollTrigger: {
-        trigger: '.header',
-        start: '10% top+=50px',
-        end: '10% top+=50px',
-        toggleActions: 'play none reverse none',
+  const scrollTrigger = {
+    trigger: '.header',
+    start: '10% top+=50px',
+    end: '10% top+=50px',
+    toggleActions: 'play none reverse none',
+  };
+
+  transitions.push(
+    gsap.fromTo(
+      nav.value,
+      {
+        backgroundColor: 'transparent',
+        boxShadow: '0rem 0.25rem 1rem 0rem rgba(0, 0, 0, 0.0)',
       },
-    }
+      {
+        backgroundColor: 'white',
+        boxShadow: '0rem 0.25rem 1rem 0rem rgba(0, 0, 0, 0.035)',
+        duration: 0.2,
+        scrollTrigger,
+      }
+    )
+  );
+
+  transitions.push(
+    gsap.fromTo(
+      '.toggle',
+      { outline: '1px solid transparent' },
+      { outline: '1px solid #E2E8F0', scrollTrigger }
+    )
   );
 
   onBeforeUnmount(() => {
-    transition.scrollTrigger.kill();
+    transitions.forEach((transition) => transition.scrollTrigger.kill());
   });
 });
 </script>
