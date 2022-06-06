@@ -108,7 +108,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .fab {
   --ease-back-out: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --fab-size: calc(var(--step-5) * 2.5);
+  --fab-size: calc(var(--step-5) * 2.25);
 
   position: fixed;
   left: 50%;
