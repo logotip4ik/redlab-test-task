@@ -39,8 +39,10 @@ onMounted(() => {
     </div>
 
     <div
+      tabindex="0"
       :class="{ toggle__slider: true, 'toggle__slider--toggled': active == 1 }"
       @click="toggleActive"
+      @keypress.enter.space="toggleActive"
     ></div>
   </div>
 </template>
