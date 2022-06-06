@@ -100,6 +100,8 @@ onMounted(() => {
 
     box-shadow: 0 0 5px rgba($color: #5a30f0, $alpha: 0.25);
 
+    cursor: pointer;
+
     &--toggled {
       left: calc(100% - var(--slider-width) - 0.15rem);
       transition-duration: 0.085s;
