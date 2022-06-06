@@ -1,3 +1,20 @@
+<script setup>
+import useGsap from '../hooks/use-gsap';
+
+const { gsap } = useGsap();
+
+onMounted(() => {
+  const revealTL = gsap.timeline();
+
+  revealTL.to('.header__content__title__line__content', {
+    yPercent: -100,
+    stagger: 0.1,
+    ease: 'expo.out',
+  });
+  revealTL.to('.header__content__info', { opacity: 1 }, '<+0.175');
+});
+</script>
+
 <template>
   <header class="header">
     <div class="header__column">
@@ -13,9 +30,15 @@
     <div class="header__column">
       <div class="header__content">
         <h1 class="header__content__title">
-          <span class="header__content__title__line">Уборка</span>
-          <span class="header__content__title__line">квартир</span>
-          <span class="header__content__title__line">в Киеве</span>
+          <span class="header__content__title__line">
+            <span class="header__content__title__line__content">Уборка</span>
+          </span>
+          <span class="header__content__title__line">
+            <span class="header__content__title__line__content">квартир</span>
+          </span>
+          <span class="header__content__title__line">
+            <span class="header__content__title__line__content">в Киеве</span>
+          </span>
         </h1>
         <p class="header__content__info">
           Мы уберем у вас дома или в офисе. Наведем чистоту после ремонта и
@@ -76,11 +99,20 @@
 
       &__line {
         display: block;
+
+        overflow: hidden;
+
+        &__content {
+          display: inline-block;
+          transform: translateY(100%);
+        }
       }
     }
 
     &__info {
       font-size: var(--step--2);
+
+      opacity: 0;
     }
   }
 }
