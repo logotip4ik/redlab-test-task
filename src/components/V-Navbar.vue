@@ -100,6 +100,7 @@ onMounted(() => {
 
   &:is(:hover, :focus-visible) {
     text-decoration-color: currentColor;
+    color: var(--primary-color);
   }
 }
 
@@ -162,10 +163,14 @@ onMounted(() => {
     &__phone {
       @include link-decoration;
 
+      font-weight: 500;
+
       margin-right: var(--free-space);
     }
 
     &__time {
+      font-weight: 500;
+
       margin-left: var(--free-space);
     }
 
@@ -193,6 +198,7 @@ onMounted(() => {
     border: none;
     border-radius: 0.25rem;
     background-color: transparent;
+    cursor: pointer;
 
     transition: color 0.2s, background-color 0.2s;
 
@@ -206,20 +212,20 @@ onMounted(() => {
       bottom: 0;
       z-index: -1;
 
+      border-radius: 9999px;
       background-color: var(--primary-color);
-      filter: blur(10px);
 
       opacity: 0;
 
       transition: opacity 0.2s;
+      transform: scale(1.5);
     }
 
     &:is(:hover, :focus-visible) {
-      color: white;
-      background-color: var(--primary-color);
+      color: var(--primary-color);
 
       &::after {
-        opacity: 0.65;
+        opacity: 0.25;
       }
     }
   }
