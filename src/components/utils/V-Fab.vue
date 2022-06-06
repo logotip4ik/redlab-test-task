@@ -144,6 +144,30 @@ onMounted(() => {
       translate(var(--outline-offset-x, 0px), var(--outline-offset-y, 0px));
   }
 
-  // &:is(:hover, :focus) {}
+  &::before {
+    content: '';
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -2;
+
+    border-radius: inherit;
+    background-color: inherit;
+
+    filter: blur(10px);
+
+    opacity: 0.1;
+
+    transition: opacity 0.3s;
+  }
+
+  &:is(:hover, :focus) {
+    &::before {
+      opacity: 0.5;
+    }
+  }
 }
 </style>
