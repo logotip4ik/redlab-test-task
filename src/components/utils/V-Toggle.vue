@@ -34,6 +34,7 @@ onMounted(() => {
       :key="key"
       :ref="(el) => (toggleTextRefs[key] = el)"
       :class="{ toggle__text: true, 'toggle__text--active': active == key }"
+      @click="toggleActive"
     >
       <slot :name="slotName" />
     </div>
@@ -77,7 +78,7 @@ onMounted(() => {
     width: min-content;
 
     padding: 0.1rem 0.5rem;
-    pointer-events: none;
+    cursor: pointer;
 
     transition: color 0.1s;
 
