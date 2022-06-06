@@ -128,12 +128,22 @@ onMounted(() => {
       display: flex;
       justify-content: center;
       align-items: center;
+
+      @media screen and (max-width: 1430px) {
+        display: none;
+      }
     }
 
     &--info {
       display: flex;
       justify-content: flex-end;
       align-items: center;
+    }
+  }
+
+  &__toggle {
+    @media screen and (max-width: 750px) {
+      display: none !important;
     }
   }
 
@@ -157,6 +167,10 @@ onMounted(() => {
 
     &__time {
       margin-left: var(--free-space);
+    }
+
+    @media screen and (max-width: 750px) {
+      display: none;
     }
   }
 
@@ -233,6 +247,10 @@ onMounted(() => {
         font-weight: 500;
       }
     }
+  }
+
+  @media screen and (max-width: 1430px) {
+    grid-template-columns: 40% auto;
   }
 }
 </style>
