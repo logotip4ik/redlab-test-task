@@ -256,7 +256,7 @@ onMounted(() => {
   }
 
   @media screen and (max-width: 1430px) {
-    grid-template-columns: 40% auto;
+    grid-template-columns: 50% auto;
   }
 }
 </style>
