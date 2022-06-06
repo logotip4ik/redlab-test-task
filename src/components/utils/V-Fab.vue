@@ -66,22 +66,46 @@ onMounted(() => {
     { yPercent: 0, rotate: -15, ease: 'back.out' }
   );
 
-  const trigger = ScrollTrigger.create({
-    trigger: '.header',
-    start: 'bottom 95%',
-    end: 'bottom 95%',
-    onEnter: () => {
-      isAtHeader.value = !isAtHeader.value;
-      toggleIsActive();
-    },
-    onLeaveBack: () => {
-      isAtHeader.value = !isAtHeader.value;
-      toggleIsActive();
-    },
-  });
+  const triggers = [];
+
+  triggers.push(
+    ScrollTrigger.create({
+      trigger: '.header',
+      start: 'bottom 95%',
+      end: 'bottom 95%',
+      onEnter: () => {
+        isAtHeader.value = !isAtHeader.value;
+        toggleIsActive();
+      },
+      onLeaveBack: () => {
+        isAtHeader.value = !isAtHeader.value;
+        toggleIsActive();
+      },
+    })
+  );
+
+  triggers.push(
+    ScrollTrigger.create({
+      trigger: '.info-gallery',
+      start: 'top bottom',
+      onEnter: () =>
+        gsap.to(fabRef.value, {
+          scale: 0,
+          yPercent: 75,
+          rotate: 90,
+          duration: 0.2,
+        }),
+      onLeaveBack: () =>
+        gsap.fromTo(
+          fabRef.value,
+          { scale: 0, yPercent: 55, rotate: 90 },
+          { scale: 0.75, yPercent: 45, rotate: 15, ease: 'back.out' }
+        ),
+    })
+  );
 
   onBeforeUnmount(() => {
-    trigger.kill();
+    triggers.forEach((trigger) => trigger.kill());
   });
 });
 </script>
