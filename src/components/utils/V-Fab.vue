@@ -45,7 +45,7 @@ function resetFab() {
 watch(isActive, (val) => {
   if (!val)
     gsap.to(fabRef.value, {
-      yPercent: 55,
+      yPercent: 45,
       rotate: 15,
       ease: 'back.out',
       scale: 0.75,
@@ -98,6 +98,8 @@ onMounted(() => {
       }
     "
     @pointermove="(ev) => magnetFab(ev)"
+    @focus="() => toggleIsActive()"
+    @blur="() => toggleIsActive()"
   >
     <slot />
   </button>
