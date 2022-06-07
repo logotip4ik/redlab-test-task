@@ -111,13 +111,13 @@ onMounted(() => {
     width: 100%;
     height: 100%;
 
+    max-height: 85vh;
+
     &__image {
       display: block;
 
       width: 100%;
-      height: auto;
-
-      max-height: 85vh;
+      height: 100%;
 
       object-fit: cover;
 
@@ -132,11 +132,12 @@ onMounted(() => {
 
     &.fixed {
       position: fixed;
+      top: 0;
       bottom: 0;
       right: 0;
 
       width: 75%;
-      height: auto;
+      max-height: unset;
     }
   }
 
