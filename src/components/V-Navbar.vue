@@ -155,7 +155,7 @@ onMounted(() => {
     justify-content: flex-end;
     align-items: center;
 
-    font-size: calc(var(--step--2) - 0.1rem);
+    font-size: var(--step--2);
     font-weight: 500;
 
     margin-right: calc(var(--free-space) * 2);
