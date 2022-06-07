@@ -100,6 +100,7 @@ onMounted(() => {
           yPercent: 75,
           rotate: 90,
           duration: 0.2,
+          overwrite: true,
         }),
       onLeaveBack: () =>
         gsap.to(fabRef.value, {
