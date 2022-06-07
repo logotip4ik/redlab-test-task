@@ -27,7 +27,7 @@ watch(
 function pinVideo(func) {
   const state = Flip.getState(infoGallerySlidesRef.value);
 
-  infoGallerySlidesRef.value.classList[func]('fixed');
+  infoGallerySlidesRef.value.classList[func]('info-gallery__slides--fixed');
 
   Flip.from(state, { ease: 'expo.out', duration: 0.75 });
 }
@@ -130,7 +130,7 @@ onMounted(() => {
       }
     }
 
-    &.fixed {
+    &--fixed {
       position: fixed;
       top: 0;
       bottom: 0;
