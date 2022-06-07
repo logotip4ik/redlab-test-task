@@ -42,7 +42,7 @@ onMounted(() => {
 
   ScrollTrigger.create({
     trigger: infoGallerySlidesRef.value,
-    start: '20% 20%',
+    start: '17% 25%',
     onEnter: () => pinVideo('add'),
     onLeaveBack: () => pinVideo('remove'),
   });
