@@ -124,7 +124,7 @@ onMounted(() => {
     align-content: center;
     gap: 4rem;
 
-    width: calc(100% - 1ch);
+    width: calc(100% - 2ch);
 
     padding: 0;
     margin: 0;
