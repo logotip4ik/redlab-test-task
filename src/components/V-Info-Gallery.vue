@@ -10,7 +10,6 @@ const { gsap, Flip, ScrollTrigger } = useGsap();
 
 const infoGalleryHeaderRef = ref(null);
 const infoGallerySlidesRef = ref(null);
-const infoGallerySlidesImagesRef = ref([]);
 
 const currentSection = useCurrentSection();
 const slides = [
@@ -20,13 +19,30 @@ const slides = [
   { label: 'Прихожая', image: InfoImage2 },
 ];
 
-watch(
-  currentSection,
-  (val) => {
-    console.log(val);
-  },
-  { immediate: true }
-);
+function imageEnterAnim(imgEl, done) {
+  gsap.fromTo(
+    imgEl,
+    { clipPath: 'inset(0 0 0 100%)', scale: 1.25 },
+    {
+      clipPath: 'inset(0 0 0 0%)',
+      scale: 1,
+      ease: 'expo.out',
+      duration: 0.85,
+      onComplete: done,
+    }
+  );
+}
+
+function imageLeaveAnim(imgEl, done) {
+  gsap.set(imgEl, {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  });
+  setTimeout(done, 900);
+}
 
 function pinVideo(func) {
   const state = Flip.getState(infoGallerySlidesRef.value);
@@ -37,12 +53,6 @@ function pinVideo(func) {
 }
 
 onMounted(() => {
-  const toBeHidden = infoGallerySlidesImagesRef.value.filter(
-    (_, idx) => idx !== currentSection.value
-  );
-
-  gsap.set(toBeHidden, { clipPath: 'inset(0 0 0 100%)' });
-
   const trigger = ScrollTrigger.create({
     trigger: infoGalleryHeaderRef.value,
     start: 'bottom 17%',
@@ -52,7 +62,6 @@ onMounted(() => {
       pinVideo('add');
     },
     onLeaveBack() {
-      currentSection.value = 0;
       emitter.emit('gallery:static');
       pinVideo('remove');
     },
@@ -73,17 +82,15 @@ onMounted(() => {
     </div>
 
     <div ref="infoGallerySlidesRef" class="info-gallery__slides">
-      <img
-        v-for="(slide, key) in slides"
-        :key="key"
-        :ref="(el) => (infoGallerySlidesImagesRef[key] = el)"
-        :src="slide.image"
-        alt="gallery image"
-        :class="{
-          'info-gallery__slides__image': true,
-          'info-gallery__slides__image--absolute': key !== 0,
-        }"
-      />
+      <Transition :css="false" @enter="imageEnterAnim" @leave="imageLeaveAnim">
+        <img
+          :src="slides[currentSection].image"
+          :alt="slides[currentSection].image"
+          :key="currentSection"
+          class="info-gallery__slides__image"
+          decode="async"
+        />
+      </Transition>
     </div>
 
     <div class="info-gallery__spacer"></div>
@@ -129,6 +136,8 @@ onMounted(() => {
 
     max-height: 100vh;
 
+    overflow: hidden;
+
     &__image {
       display: block;
 
@@ -161,9 +170,10 @@ onMounted(() => {
         bottom: 25%;
 
         width: 100%;
-        height: auto;
+        height: 55vh;
 
         max-height: 75%;
+        min-height: 55vh;
       }
     }
   }
