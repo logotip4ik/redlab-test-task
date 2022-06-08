@@ -2,13 +2,17 @@
 import InfoImage1 from '../assets/images/info-gallery-image-1.png';
 import InfoImage2 from '../assets/images/info-gallery-image-2.png';
 import useGsap from '../hooks/use-gsap';
+import useEmitter from '../hooks/use-emitter';
+import useCurrentSection from '../hooks/use-current-section';
 
+const emitter = useEmitter();
 const { gsap, Flip, ScrollTrigger } = useGsap();
 
+const infoGalleryHeaderRef = ref(null);
 const infoGallerySlidesRef = ref(null);
 const infoGallerySlidesImagesRef = ref([]);
 
-const currentSlide = ref(0);
+const currentSection = useCurrentSection();
 const slides = [
   { label: 'Кухня', image: InfoImage1 },
   { label: 'Комнаты', image: InfoImage2 },
@@ -17,7 +21,7 @@ const slides = [
 ];
 
 watch(
-  currentSlide,
+  currentSection,
   (val) => {
     console.log(val);
   },
@@ -34,24 +38,33 @@ function pinVideo(func) {
 
 onMounted(() => {
   const toBeHidden = infoGallerySlidesImagesRef.value.filter(
-    (_, idx) => idx !== currentSlide.value
+    (_, idx) => idx !== currentSection.value
   );
 
-  // hiding all not needed images
   gsap.set(toBeHidden, { clipPath: 'inset(0 0 0 100%)' });
 
-  ScrollTrigger.create({
-    trigger: infoGallerySlidesRef.value,
-    start: '17% 25%',
-    onEnter: () => pinVideo('add'),
-    onLeaveBack: () => pinVideo('remove'),
+  const trigger = ScrollTrigger.create({
+    trigger: infoGalleryHeaderRef.value,
+    start: 'bottom 17%',
+    end: `+=100%`,
+    onEnter() {
+      emitter.emit('gallery:fixed');
+      pinVideo('add');
+    },
+    onLeaveBack() {
+      currentSection.value = 0;
+      emitter.emit('gallery:static');
+      pinVideo('remove');
+    },
   });
+
+  onBeforeUnmount(() => trigger.kill());
 });
 </script>
 
 <template>
   <section class="info-gallery">
-    <div class="info-gallery__heading">
+    <div ref="infoGalleryHeaderRef" class="info-gallery__heading">
       <h2 class="info-gallery__heading__title">Как мы убираем</h2>
       <p class="info-gallery__heading__info">
         Клинер приезжает в назначенное время со всем необходимым и сразу
@@ -72,7 +85,10 @@ onMounted(() => {
         }"
       />
     </div>
+
     <div class="info-gallery__spacer"></div>
+
+    <VInfoGalleryMenu />
   </section>
 </template>
 
@@ -111,7 +127,7 @@ onMounted(() => {
     width: 100%;
     height: 100%;
 
-    max-height: 85vh;
+    max-height: 100vh;
 
     &__image {
       display: block;
@@ -137,7 +153,18 @@ onMounted(() => {
       right: 0;
 
       width: 75%;
-      max-height: unset;
+      max-height: 100%;
+
+      @media screen and (max-width: 1100px) {
+        top: unset;
+        left: 0;
+        bottom: 25%;
+
+        width: 100%;
+        height: auto;
+
+        max-height: 75%;
+      }
     }
   }
 
