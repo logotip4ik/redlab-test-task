@@ -155,8 +155,8 @@ onMounted(() => {
   width: var(--fab-size);
   height: var(--fab-size);
 
-  min-width: 6rem;
-  min-height: 6rem;
+  min-width: 7.5rem;
+  min-height: 7.5rem;
 
   border: none;
   border-radius: 9999px;
