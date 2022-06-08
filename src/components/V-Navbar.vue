@@ -4,10 +4,12 @@ import NavLogo from '../assets/images/nav-logo.svg';
 import NavMenu from '../assets/images/nav-menu.svg';
 
 import useGsap from '../hooks/use-gsap';
+import useEmitter from '../hooks/use-emitter';
 
-const nav = ref(null);
+const navRef = ref(null);
 
 const { gsap, ScrollTrigger } = useGsap();
+const emitter = useEmitter();
 
 const navLinks = [
   'После ремонта',
@@ -28,7 +30,7 @@ onMounted(() => {
 
   transitions.push(
     gsap.fromTo(
-      nav.value,
+      navRef.value,
       {
         backgroundColor: 'transparent',
         boxShadow: '0rem 0.25rem 1rem 0rem rgba(0, 0, 0, 0.0)',
@@ -50,14 +52,25 @@ onMounted(() => {
     )
   );
 
+  const hideNavbar = () =>
+    gsap.to(navRef.value, { yPercent: -100, ease: 'expo.out' });
+  const showNavbar = () =>
+    gsap.to(navRef.value, { yPercent: 0, ease: 'expo.out' });
+
+  emitter.on('gallery:fixed', hideNavbar);
+  emitter.on('gallery:static', showNavbar);
+
   onBeforeUnmount(() => {
     transitions.forEach((transition) => transition.scrollTrigger.kill());
+
+    emitter.off('gallery:fixed', hideNavbar);
+    emitter.off('gallery:static', showNavbar);
   });
 });
 </script>
 
 <template>
-  <nav ref="nav" class="nav">
+  <nav ref="navRef" class="nav">
     <div class="nav__column nav__column--heading">
       <NavLogo class="nav__logo" />
       <Utils-VToggle class="nav__toggle">
