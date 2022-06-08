@@ -12,12 +12,17 @@ const currentSection = useCurrentSection();
 const infoGalleryInfoRef = ref(null);
 const infoGalleryInfoListItemsRef = ref([]);
 
+function isSmallScreen(breakpoint = 1100) {
+  return window.innerWidth < breakpoint;
+}
+
 onMounted(() => {
   const showMenu = () => {
+    const smallScreen = isSmallScreen();
     const revealTl = gsap.timeline({ defaults: { ease: 'expo.out' } });
 
     revealTl.to(infoGalleryInfoRef.value, {
-      xPercent: 100,
+      [smallScreen ? 'yPercent' : 'xPercent']: smallScreen ? -100 : 100,
       ease: 'expo.out',
       duration: 0.75,
     });
@@ -25,11 +30,11 @@ onMounted(() => {
     revealTl.from(
       infoGalleryInfoListItemsRef.value,
       {
-        xPercent: -100,
+        [smallScreen ? 'opacity' : 'xPercent']: smallScreen ? 0 : -100,
         duration: 0.75,
         stagger: 0.05,
         transition: 'none',
-        clearProps: 'transform, transition',
+        clearProps: 'all',
       },
       0.1
     );
@@ -37,7 +42,7 @@ onMounted(() => {
 
   const hideMenu = () =>
     gsap.to(infoGalleryInfoRef.value, {
-      xPercent: 0,
+      [isSmallScreen() ? 'yPercent' : 'xPercent']: isSmallScreen() ? 100 : 0,
       ease: 'expo.out',
       duration: 0.75,
     });
@@ -71,7 +76,7 @@ onMounted(() => {
         }"
         @click="currentSection = key"
       >
-        {{ section }}
+        <span>→ </span>{{ section }}
       </li>
     </ul>
   </div>
@@ -97,11 +102,19 @@ onMounted(() => {
 
   &__title {
     position: absolute;
-    top: 1rem;
-    left: 2rem;
+    top: 2rem;
+    left: 1.5rem;
 
-    font-size: var(--step--1);
+    font-size: calc(var(--step--1) - 0.1rem);
     font-weight: 500;
+
+    margin: 0;
+    opacity: 0.9;
+
+    @media screen and (max-width: 1100px) {
+      top: 0.5rem;
+      left: 0.5rem;
+    }
   }
 
   &__list {
@@ -120,31 +133,61 @@ onMounted(() => {
 
     &__item {
       position: relative;
-      left: 0;
 
-      font-size: var(--step-2);
+      font-size: var(--step-1);
+      text-align: left;
 
-      margin-left: -1.25ch;
+      margin-left: 0;
 
       opacity: 0.7;
 
-      list-style-position: inside;
+      list-style-type: none;
 
       cursor: pointer;
       transition: opacity 0.2s, transform 0.2s, margin 0.2s;
 
-      &::marker {
-        content: '→ ';
+      // selector for marker
+      & > span {
+        position: absolute;
+        right: 91%;
+
+        opacity: 0;
+
+        transition: right 0.2s, opacity 0.2s;
       }
 
       &--active {
         opacity: 1;
 
-        margin-left: 0;
+        margin-left: 1.6ch;
 
         transform: skewX(-15deg);
+
+        & > span {
+          right: calc(100% + 0.4rem);
+
+          opacity: 1;
+        }
       }
     }
+
+    @media screen and (max-width: 1100px) {
+      justify-items: center;
+      grid-template-columns: repeat(calc(var(--sections-length) / 2), 1fr);
+      grid-template-rows: repeat(calc(var(--sections-length) / 2), 1fr);
+    }
+  }
+
+  @media screen and (max-width: 1100px) {
+    top: unset;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    width: 100%;
+    height: 25%;
+
+    transform: translateY(100%);
   }
 }
 </style>
