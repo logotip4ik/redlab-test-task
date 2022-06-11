@@ -10,19 +10,21 @@ const props = defineProps({
   _maxImageHeight: { type: Number, required: false, default: 1050 },
 });
 
+const { gsap } = useGsap();
+
 const BREAKPOINT = 1100;
 
 const relativeX = computed(() => {
-  if (typeof window === 'undefined') return 0;
+  if (window.innerWidth < BREAKPOINT) {
+    const correction = gsap.utils.mapRange(-50, 50, 18, -20, props.x - 50);
 
-  if (window.innerWidth < BREAKPOINT) return props.x - 8;
+    return props.x - correction;
+  }
 
   return props.x * (props.containerWidth / props._maxImageWidth);
 });
 
 const relativeY = computed(() => {
-  if (typeof window === 'undefined') return 0;
-
   if (window.innerWidth < BREAKPOINT) return props.y - 8;
 
   return props.y * (props.containerHeight / props._maxImageHeight);
@@ -60,6 +62,9 @@ const relativeY = computed(() => {
   background-color: var(--primary-color);
 
   transform: translate(-50%, -50%);
+
+  opacity: 0;
+  visibility: hidden;
 
   &__indicator {
     cursor: default;
