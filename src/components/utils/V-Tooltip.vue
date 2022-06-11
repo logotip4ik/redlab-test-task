@@ -200,6 +200,7 @@ onMounted(() => {
   position: absolute;
   left: 0;
   top: 0;
+  z-index: 1;
 
   color: white;
 
@@ -209,12 +210,15 @@ onMounted(() => {
   border-radius: 99999px;
   background-color: var(--primary-color);
 
+  animation: infinite 3s pulse;
   transform: translate(-50%, -50%);
 
   opacity: 0;
   visibility: hidden;
 
   &__indicator {
+    font-size: 1.65rem;
+
     cursor: default;
 
     transition: transform 0.3s;
@@ -265,7 +269,7 @@ onMounted(() => {
 
   &:is(:hover, :focus) {
     .tooltip__indicator {
-      transform: rotate(45deg) translate(3%, -1%);
+      transform: rotate(45deg) translate(4%, -4%);
     }
 
     .tooltip__text {
@@ -274,6 +278,15 @@ onMounted(() => {
 
       transform: translateY(0);
     }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0px hsla(253, 86%, 56%, 0.175);
+  }
+  100% {
+    box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
   }
 }
 </style>
