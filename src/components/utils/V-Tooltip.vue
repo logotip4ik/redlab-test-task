@@ -4,10 +4,6 @@ const props = defineProps({
   text: { type: String, required: true, default: '' },
   x: { type: Number, required: true, default: 0 },
   y: { type: Number, required: true, default: 0 },
-  containerWidth: { type: Number, required: true, default: 0 },
-  containerHeight: { type: Number, required: true, default: 0 },
-  _maxImageWidth: { type: Number, required: false, default: 1400 },
-  _maxImageHeight: { type: Number, required: false, default: 1050 },
 });
 
 const tooltipRef = ref(null);

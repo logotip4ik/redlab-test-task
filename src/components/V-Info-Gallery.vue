@@ -9,74 +9,75 @@ const currentSection = useCurrentSection();
 const infoGalleryHeaderRef = ref(null);
 const infoGallerySlidesRef = ref(null);
 
-const infoGallerySlidesSize = useElementSize(infoGallerySlidesRef);
 const slides = [
-  { label: 'Кухня', image: InfoImage1 },
-  { label: 'Комнаты', image: InfoImage1 },
-  { label: 'Ванная', image: InfoImage2 },
-  { label: 'Прихожая', image: InfoImage2 },
+  {
+    label: 'Кухня',
+    image: InfoImage1,
+    tooltips: [
+      { text: 'Чистим фасад витяжки', x: 31, y: 38 },
+      { text: 'Чистим', x: 31, y: 59 },
+    ],
+  },
+  {
+    label: 'Комнаты',
+    image: InfoImage1,
+    tooltips: [
+      { text: 'Чистим', x: 64, y: 50 },
+      { text: 'Чистим', x: 50, y: 74 },
+    ],
+  },
+  {
+    label: 'Ванная',
+    image: InfoImage2,
+    tooltips: [
+      { text: 'Чистим', x: 32, y: 39 },
+      { text: 'Чистим', x: 62, y: 92 },
+    ],
+  },
+  {
+    label: 'Прихожая',
+    image: InfoImage2,
+    tooltips: [
+      { text: 'Чистим', x: 67, y: 52 },
+      { text: 'Чистим', x: 45, y: 75 },
+    ],
+  },
 ];
 
-const tooltips = [
-  [
-    { text: 'Чистим фасад витяжки', x: 27, y: 39 },
-    { text: 'Чистим', x: 29, y: 64 },
-  ],
-  [
-    { text: 'Чистим', x: 53, y: 80 },
-    { text: 'Чистим', x: 68, y: 55 },
-  ],
-  [
-    { text: 'Чистим', x: 23, y: 39 },
-    { text: 'Чистим', x: 64, y: 98 },
-  ],
-  [
-    { text: 'Чистим', x: 40, y: 88 },
-    { text: 'Чистим', x: 72, y: 55 },
-  ],
-];
+function slideEnterAnim(imgEl, done) {
+  const appearTl = gsap.timeline({
+    onComplete: done,
+  });
 
-function imageEnterAnim(imgEl, done) {
-  gsap
-    .fromTo(
-      imgEl,
-      { clipPath: 'inset(0 0 0 100%)', scale: 1.25 },
-      {
-        clipPath: 'inset(0 0 0 0%)',
-        scale: 1,
-        ease: 'expo.out',
-        duration: 0.85,
-        onComplete: done,
-      }
-    )
-    .then(() =>
-      gsap.to('.tooltip', { autoAlpha: 1, duration: 0.25, stagger: 0.065 })
-    );
+  appearTl.fromTo(
+    imgEl,
+    { clipPath: 'inset(0 0 0 100%)', scale: 1.25, zIndex: 1 },
+    {
+      clipPath: 'inset(0 0 0 0%)',
+      scale: 1,
+      ease: 'expo.out',
+      duration: 0.85,
+    }
+  );
+  appearTl.to('.tooltip', {
+    autoAlpha: 1,
+    duration: 0.25,
+    stagger: 0.065,
+  });
 }
 
-function imageLeaveAnim(imgEl, done) {
+function slideLeaveAnim(imgEl, done) {
   gsap.set(imgEl, {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
+    zIndex: -1,
   });
-  setTimeout(done, 900);
-}
+  gsap.to('.tooltip', { autoAlpha: 0, duration: 0.05 });
 
-function enterTooltips(el, done) {
-  gsap.to('.tooltip', {
-    autoAlpha: 1,
-    duration: 0.3,
-    stagger: 0.1,
-    delay: 0.1,
-    onComplete: done,
-  });
-}
-
-function leaveTooltips(el, done) {
-  gsap.to('.tooltip', { autoAlpha: 0, duration: 0.1, onComplete: done });
+  setTimeout(done, 750);
 }
 
 function pinVideo(func) {
@@ -121,29 +122,24 @@ onMounted(() => {
     </div>
 
     <div ref="infoGallerySlidesRef" class="info-gallery__slides">
-      <Transition :css="false" @enter="imageEnterAnim" @leave="imageLeaveAnim">
-        <img
-          :src="slides[currentSection].image"
-          :alt="slides[currentSection].image"
-          :key="currentSection"
-          class="info-gallery__slides__image"
-          decode="async"
-          loading="lazy"
-        />
-      </Transition>
-
       <TransitionGroup
         :css="false"
-        @enter="enterTooltips"
-        @leave="leaveTooltips"
+        @enter="slideEnterAnim"
+        @leave="slideLeaveAnim"
       >
-        <Utils-VTooltip
-          v-for="(tooltip, key) in tooltips[currentSection]"
-          :key="key + '-' + slides[currentSection].label"
-          v-bind="tooltip"
-          :container-width="infoGallerySlidesSize.width"
-          :container-height="infoGallerySlidesSize.height"
-        />
+        <div
+          v-for="(slide, key) in slides"
+          v-show="currentSection === key"
+          :key="slide.label + slide.image"
+          class="info-gallery__slides__slide"
+          :style="{ backgroundImage: `url(${slide.image})` }"
+        >
+          <Utils-VTooltip
+            v-for="(tooltip, key) in slide.tooltips"
+            :key="key + '-' + slide.label"
+            v-bind="tooltip"
+          />
+        </div>
       </TransitionGroup>
     </div>
 
@@ -187,27 +183,19 @@ onMounted(() => {
     z-index: 1;
 
     width: 100%;
-    height: 100%;
+    height: 90vh;
 
     max-height: 100vh;
 
     overflow: hidden;
 
-    &__image {
-      display: block;
-
+    &__slide {
       width: 100%;
       height: 100%;
 
-      object-fit: cover;
-
-      &--absolute {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-      }
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center center;
     }
 
     &--fixed {
@@ -217,6 +205,7 @@ onMounted(() => {
       right: 0;
 
       width: 75%;
+      height: unset;
       max-height: 100%;
 
       @media screen and (max-width: 1100px) {
@@ -231,6 +220,10 @@ onMounted(() => {
         max-height: 80%;
         min-height: 500px;
       }
+    }
+
+    @media screen and (max-width: 1100px) {
+      height: 50vh;
     }
   }
 
