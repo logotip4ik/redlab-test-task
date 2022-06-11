@@ -8,12 +8,11 @@ import SvgLoader from 'vite-svg-loader';
 export default defineConfig({
   plugins: [
     Vue(),
-    AutoImport({ imports: ['vue'] }),
     Components({
       dirs: ['src/components'],
       extensions: ['vue'],
       deep: true,
-      dts: false,
+      dts: true,
       directoryAsNamespace: true,
       globalNamespaces: [],
       directives: true,
@@ -25,5 +24,12 @@ export default defineConfig({
       ],
     }),
     SvgLoader(),
+    AutoImport({
+      imports: ['vue'],
+      dirs: ['./src/composables'],
+      vueTemplate: true,
+      sourceMap: false,
+      dts: true,
+    }),
   ],
 });
