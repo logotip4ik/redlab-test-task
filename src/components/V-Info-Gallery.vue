@@ -176,6 +176,10 @@ onMounted(() => {
 
       margin: 0;
     }
+    @media screen and (max-width: 1100px) {
+      grid-template-columns: 1fr;
+      grid-template-rows: fit-content fit-content;
+    }
   }
 
   &__slides {
