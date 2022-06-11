@@ -1,8 +1,4 @@
 <script setup>
-import useEmitter from '../hooks/use-emitter';
-import useCurrentSection from '../hooks/use-current-section';
-import useGsap from '../hooks/use-gsap';
-
 const menuSections = ['Кухня', 'Комнаты', 'Ванная', 'Прихожая'];
 
 const { gsap } = useGsap();

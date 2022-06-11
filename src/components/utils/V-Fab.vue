@@ -1,6 +1,4 @@
 <script setup>
-import useGsap from '../../hooks/use-gsap';
-
 const fabRef = ref(null);
 const isAtHeader = ref(true);
 const isActive = ref(true);

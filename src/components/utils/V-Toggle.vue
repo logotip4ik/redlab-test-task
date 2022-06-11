@@ -1,6 +1,4 @@
 <script setup>
-import useGsap from '../../hooks/use-gsap';
-
 const toggleRef = ref(null);
 const toggleTextRefs = ref([]);
 const active = ref(0);

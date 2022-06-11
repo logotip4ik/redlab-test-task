@@ -4,8 +4,6 @@ import InfoCard2 from '../assets/images/info-card-2.png';
 import InfoCard3 from '../assets/images/info-card-3.png';
 import InfoCard4 from '../assets/images/info-card-4.png';
 
-import useGsap from '../hooks/use-gsap';
-
 const { gsap } = useGsap();
 
 const cardsRef = ref([]);

@@ -1,18 +1,14 @@
 <script setup>
 import InfoImage1 from '../assets/images/info-gallery-image-1.png';
 import InfoImage2 from '../assets/images/info-gallery-image-2.png';
-import useGsap from '../hooks/use-gsap';
-import useEmitter from '../hooks/use-emitter';
-import useCurrentSection from '../hooks/use-current-section';
-import useElementSize from '../hooks/use-element-size';
 
 const emitter = useEmitter();
 const { gsap, Flip, ScrollTrigger } = useGsap();
+const currentSection = useCurrentSection();
 
 const infoGalleryHeaderRef = ref(null);
 const infoGallerySlidesRef = ref(null);
 
-const currentSection = useCurrentSection();
 const infoGallerySlidesSize = useElementSize(infoGallerySlidesRef);
 const slides = [
   { label: 'Кухня', image: InfoImage1 },

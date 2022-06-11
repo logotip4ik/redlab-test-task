@@ -1,6 +1,4 @@
 <script setup>
-import useGsap from '../hooks/use-gsap';
-
 const { gsap } = useGsap();
 
 onMounted(() => {

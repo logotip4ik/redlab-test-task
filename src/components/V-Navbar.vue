@@ -1,10 +1,6 @@
 <script setup>
-import { onBeforeUnmount, onMounted } from '@vue/runtime-core';
 import NavLogo from '../assets/images/nav-logo.svg';
 import NavMenu from '../assets/images/nav-menu.svg';
-
-import useGsap from '../hooks/use-gsap';
-import useEmitter from '../hooks/use-emitter';
 
 const navRef = ref(null);
 
