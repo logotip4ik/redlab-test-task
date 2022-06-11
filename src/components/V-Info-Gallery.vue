@@ -192,7 +192,8 @@ onMounted(() => {
         width: 100vw;
         height: 52vh;
 
-        max-height: 75%;
+        max-height: 80%;
+        min-height: 500px;
       }
     }
   }
