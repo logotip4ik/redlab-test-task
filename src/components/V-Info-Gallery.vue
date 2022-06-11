@@ -12,9 +12,28 @@ const infoGallerySlidesRef = ref(null);
 const infoGallerySlidesSize = useElementSize(infoGallerySlidesRef);
 const slides = [
   { label: 'Кухня', image: InfoImage1 },
-  { label: 'Комнаты', image: InfoImage2 },
-  { label: 'Ванная', image: InfoImage1 },
+  { label: 'Комнаты', image: InfoImage1 },
+  { label: 'Ванная', image: InfoImage2 },
   { label: 'Прихожая', image: InfoImage2 },
+];
+
+const tooltips = [
+  [
+    { text: 'Чистим фасад витяжки', x: 27, y: 39 },
+    { text: 'Чистим', x: 29, y: 64 },
+  ],
+  [
+    { text: 'Чистим', x: 53, y: 80 },
+    { text: 'Чистим', x: 68, y: 55 },
+  ],
+  [
+    { text: 'Чистим', x: 23, y: 39 },
+    { text: 'Чистим', x: 64, y: 98 },
+  ],
+  [
+    { text: 'Чистим', x: 40, y: 88 },
+    { text: 'Чистим', x: 72, y: 55 },
+  ],
 ];
 
 function imageEnterAnim(imgEl, done) {
@@ -36,7 +55,6 @@ function imageEnterAnim(imgEl, done) {
 }
 
 function imageLeaveAnim(imgEl, done) {
-  gsap.to('.tooltip', { autoAlpha: 0, duration: 0.1 });
   gsap.set(imgEl, {
     position: 'absolute',
     top: 0,
@@ -45,6 +63,20 @@ function imageLeaveAnim(imgEl, done) {
     bottom: 0,
   });
   setTimeout(done, 900);
+}
+
+function enterTooltips(el, done) {
+  gsap.to('.tooltip', {
+    autoAlpha: 1,
+    duration: 0.3,
+    stagger: 0.1,
+    delay: 0.1,
+    onComplete: done,
+  });
+}
+
+function leaveTooltips(el, done) {
+  gsap.to('.tooltip', { autoAlpha: 0, duration: 0.1, onComplete: done });
 }
 
 function pinVideo(func) {
@@ -56,8 +88,6 @@ function pinVideo(func) {
 }
 
 onMounted(() => {
-  gsap.set('.tooltip', { autoAlpha: 0 });
-
   const trigger = ScrollTrigger.create({
     trigger: infoGalleryHeaderRef.value,
     start: 'bottom 17%',
@@ -102,13 +132,19 @@ onMounted(() => {
         />
       </Transition>
 
-      <Utils-VTooltip
-        text="Чистим фасад витяжки"
-        :x="27"
-        :y="39"
-        :container-width="infoGallerySlidesSize.width"
-        :container-height="infoGallerySlidesSize.height"
-      />
+      <TransitionGroup
+        :css="false"
+        @enter="enterTooltips"
+        @leave="leaveTooltips"
+      >
+        <Utils-VTooltip
+          v-for="(tooltip, key) in tooltips[currentSection]"
+          :key="key + '-' + slides[currentSection].label"
+          v-bind="tooltip"
+          :container-width="infoGallerySlidesSize.width"
+          :container-height="infoGallerySlidesSize.height"
+        />
+      </TransitionGroup>
     </div>
 
     <div class="info-gallery__spacer"></div>
