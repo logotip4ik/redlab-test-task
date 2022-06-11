@@ -104,7 +104,7 @@ onMounted(() => {
 
       <Utils-VTooltip
         text="Чистим фасад витяжки"
-        :x="35"
+        :x="27"
         :y="39"
         :container-width="infoGallerySlidesSize.width"
         :container-height="infoGallerySlidesSize.height"
