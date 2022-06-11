@@ -1,7 +1,7 @@
 import { reactive, onMounted, onBeforeUnmount } from 'vue';
 
 /** @param {import('vue').Ref<HTMLElement>} el */
-export default (el) => {
+export function useElementSize(el) {
   const size = reactive({ width: 0, height: 0 });
 
   function setDimensions() {
@@ -19,4 +19,4 @@ export default (el) => {
   });
 
   return size;
-};
+}
