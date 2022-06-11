@@ -162,7 +162,7 @@ const debounce = (func, time = 200) => {
 onMounted(() => {
   const debouncedFunc = debounce(
     () => positionElement(tooltipRef.value, props.x, props.y),
-    20
+    25
   );
 
   const observer = new ResizeObserver(debouncedFunc);
