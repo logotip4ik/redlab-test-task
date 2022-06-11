@@ -1,5 +1,7 @@
 <script setup>
 const fabRef = ref(null);
+const fabTextRef = ref(null);
+
 const isAtHeader = ref(true);
 const isActive = ref(true);
 
@@ -64,6 +66,7 @@ watch(isActive, (val) => {
 });
 
 onMounted(() => {
+  gsap.to(fabTextRef.value, { rotate: 360, duration: 60, repeat: -1 });
   gsap.fromTo(
     fabRef.value,
     { xPercent: -50, yPercent: 100, rotate: 0, '--outline-scale': 0.95 },
@@ -131,7 +134,7 @@ onMounted(() => {
     @focus="() => toggleIsActive()"
     @blur="() => toggleIsActive()"
   >
-    <p class="fab__text">
+    <p ref="fabTextRef" class="fab__text">
       <slot />
     </p>
   </button>
