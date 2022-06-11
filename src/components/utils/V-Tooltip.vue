@@ -10,32 +10,184 @@ const props = defineProps({
   _maxImageHeight: { type: Number, required: false, default: 1050 },
 });
 
-const { gsap } = useGsap();
+const tooltipRef = ref(null);
+const tooltipTextRef = ref(null);
 
-const BREAKPOINT = 1100;
+const position = reactive({ x: 0, y: 0 });
 
-const relativeX = computed(() => {
-  if (window.innerWidth < BREAKPOINT) {
-    const correction = gsap.utils.mapRange(-50, 50, 18, -20, props.x - 50);
+// taken from: https://stackoverflow.com/questions/38763365/how-do-i-keep-the-position-of-my-image-fixed-with-respect-to-the-background-imag
+function getBackgroundImageBox(elem) {
+  const computedStyle = getComputedStyle(elem);
+  const resolvedSize = computedStyle.backgroundSize.split(', ')[0];
+  const resolvedPos = computedStyle.backgroundPosition.split(', ')[0];
 
-    return props.x - correction;
+  // get resolved elem width and height
+  const resolvedWidth = computedStyle.width.split(', ')[0];
+  const resolvedHeight = computedStyle.height.split(', ')[0];
+  const elemWidth = parseInt(resolvedWidth.replace('px', ''), 10);
+  const elemHeight = parseInt(resolvedHeight.replace('px', ''), 10);
+
+  // border-box
+  const byOriginLeft = 0;
+  const byOriginTop = 0;
+  const byOriginRight = elemWidth;
+  const byOriginBottom = elemHeight;
+
+  const byOriginWidth = byOriginRight - byOriginLeft;
+  const byOriginHeight = byOriginBottom - byOriginTop;
+
+  // create image object to get original image's size
+  const image = new Image();
+  image.src = computedStyle.backgroundImage
+    .split(', ')[0]
+    .replace(/url\((['"])?(.*?)\1\)/gi, '$2')
+    .replace(/\\(.)/, '$1'); // note: don't have to decode URI to assign, but must manually strip backslash escape codes
+  const imageWidth = image.width;
+  const imageHeight = image.height;
+
+  // get original image y/x ratio, and elem y/x ratio
+  let imageRatio = imageHeight / imageWidth;
+  let elemRatio = elemHeight / elemWidth;
+
+  let res;
+
+  // compute initial idea of the result based on origin and size; will apply position afterward
+  // cover
+  if (elemRatio > imageRatio) {
+    // more height in elem than image => flush height, surplus width
+    res = {
+      left: byOriginLeft,
+      top: byOriginTop,
+      right: byOriginLeft + byOriginHeight / imageRatio,
+      bottom: byOriginBottom,
+    };
+  } else {
+    // more width in elem than image => flush width, surplus height
+    res = {
+      left: byOriginLeft,
+      top: byOriginTop,
+      right: byOriginRight,
+      bottom: byOriginTop + byOriginWidth * imageRatio,
+    };
   }
 
-  return props.x * (props.containerWidth / props._maxImageWidth);
-});
+  // get absolute pos value in pixels
+  const resolvedPosSplit = resolvedPos.split(' ');
+  const resolvedPosLeft = resolvedPosSplit[0];
+  const resolvedPosTop =
+    resolvedPosSplit.length >= 2 ? resolvedPosSplit[1] : '50%'; // resolved always has both in FF, but not IE
 
-const relativeY = computed(() => {
-  if (window.innerWidth < BREAKPOINT) return props.y - 8;
+  let posLeft;
+  let isPosLeftPct;
 
-  return props.y * (props.containerHeight / props._maxImageHeight);
+  if (resolvedPosLeft.indexOf('%') > -1) {
+    isPosLeftPct = true;
+    let posLeftPct = parseInt(resolvedPosLeft.replace('%', ''));
+    posLeft = (posLeftPct * (byOriginWidth - (res.right - res.left))) / 100;
+  } else {
+    isPosLeftPct = false;
+    posLeft = parseInt(resolvedPosLeft.replace('px', ''));
+  }
+
+  let posTop;
+  let isPosTopPct;
+
+  if (resolvedPosTop.indexOf('%') > -1) {
+    isPosTopPct = true;
+    let posTopPct = parseInt(resolvedPosTop.replace('%', ''));
+    posTop = (posTopPct * (byOriginHeight - (res.bottom - res.top))) / 100;
+  } else {
+    isPosTopPct = false;
+    posTop = parseInt(resolvedPosTop.replace('px', ''));
+  }
+
+  // apply pos
+  // tricky: must *not* apply pct pos adjustment to flush dimension for cover and contain
+  if (
+    !(
+      isPosLeftPct &&
+      ((resolvedSize === 'cover' && elemRatio < imageRatio) ||
+        (resolvedSize === 'contain' && elemRatio > imageRatio))
+    )
+  ) {
+    res.left += posLeft;
+    res.right += posLeft;
+  } // end if
+  if (
+    !(
+      isPosTopPct &&
+      ((resolvedSize === 'cover' && elemRatio > imageRatio) ||
+        (resolvedSize === 'contain' && elemRatio < imageRatio))
+    )
+  ) {
+    res.top += posTop;
+    res.bottom += posTop;
+  } // end if
+
+  return res;
+}
+
+/**
+ * @param {HTMLElement | string} selector
+ * @param {number} x
+ * @param {number} y
+ */
+function positionElement(selector, x, y) {
+  const element =
+    typeof selector === 'string' ? document.querySelector(selector) : selector;
+  const containingElem = element.parentElement;
+
+  let bgBox = getBackgroundImageBox(containingElem);
+  let computedStyle = getComputedStyle(element);
+
+  // move the smaller image to the required position
+  // note: subtracting half the width and height for centering, but could do it differently
+  // must use computedStyle for the subtraction in case the inline style attribute has not been set yet
+  position.x =
+    bgBox.left +
+    ((bgBox.right - bgBox.left) * x) / 100 -
+    computedStyle.width.replace('px', '') / 2;
+  position.y =
+    bgBox.top +
+    ((bgBox.bottom - bgBox.top) * y) / 100 -
+    computedStyle.height.replace('px', '') / 2;
+}
+
+const debounce = (func, time = 200) => {
+  let timer;
+
+  return (...args) => {
+    clearTimeout(timer);
+
+    timer = setTimeout(() => func.apply(this, args), time);
+  };
+};
+
+onMounted(() => {
+  const debouncedFunc = debounce(
+    () => positionElement(tooltipRef.value, props.x, props.y),
+    20
+  );
+
+  const observer = new ResizeObserver(debouncedFunc);
+
+  observer.observe(tooltipRef.value.parentElement);
+
+  onBeforeUnmount(() => {
+    observer.disconnect();
+  });
 });
 </script>
 
 <template>
-  <div class="tooltip" :style="{ left: `${relativeX}%`, top: `${relativeY}%` }">
+  <div
+    ref="tooltipRef"
+    class="tooltip"
+    :style="{ left: `${position.x}px`, top: `${position.y}px` }"
+  >
     <span class="tooltip__indicator">&plus;</span>
 
-    <div class="tooltip__text">
+    <div ref="tooltipTextRef" class="tooltip__text">
       {{ text }}
     </div>
   </div>
@@ -101,7 +253,7 @@ const relativeY = computed(() => {
       content: '';
 
       position: absolute;
-      top: 100%;
+      top: 99%;
       left: 50%;
 
       width: 0;
