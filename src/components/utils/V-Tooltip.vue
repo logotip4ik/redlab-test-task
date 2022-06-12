@@ -267,6 +267,31 @@ onMounted(() => {
     }
   }
 
+  &.right {
+    .tooltip__text {
+      left: -0.125rem;
+
+      &::before {
+        left: 0.5rem;
+
+        transform: none;
+      }
+    }
+  }
+
+  &.left {
+    .tooltip__text {
+      right: -0.125rem;
+
+      &::before {
+        left: unset;
+        right: 0.5rem;
+
+        transform: none;
+      }
+    }
+  }
+
   &:is(:hover, :focus) {
     .tooltip__indicator {
       transform: rotate(45deg) translate(4%, -4%);
