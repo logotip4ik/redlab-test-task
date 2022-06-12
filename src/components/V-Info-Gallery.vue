@@ -14,8 +14,8 @@ const slides = [
     label: 'Кухня',
     image: InfoImage1,
     tooltips: [
-      { text: 'Чистим фасад витяжки', x: 31, y: 38 },
-      { text: 'Чистим', x: 31, y: 59 },
+      { text: 'Чистим фасад витяжки', x: 31, y: 38, class: 'right' },
+      { text: 'Чистим', x: 31, y: 59, class: 'right' },
     ],
   },
   {
@@ -30,7 +30,7 @@ const slides = [
     label: 'Ванная',
     image: InfoImage2,
     tooltips: [
-      { text: 'Чистим', x: 32, y: 39 },
+      { text: 'Чистим', x: 32, y: 39, class: 'right' },
       { text: 'Чистим', x: 62, y: 92 },
     ],
   },
@@ -38,7 +38,7 @@ const slides = [
     label: 'Прихожая',
     image: InfoImage2,
     tooltips: [
-      { text: 'Чистим', x: 67, y: 52 },
+      { text: 'Чистим', x: 67, y: 52, class: 'left' },
       { text: 'Чистим', x: 45, y: 75 },
     ],
   },
