@@ -91,7 +91,16 @@ function pinVideo(func) {
   });
 }
 
+function preload(imageArray) {
+  for (let i = 0; i < imageArray.length; ++i) {
+    const img = new Image();
+    img.src = imageArray[i];
+  }
+}
+
 onMounted(() => {
+  preload(slides.map((slide) => slide.image));
+
   const trigger = ScrollTrigger.create({
     trigger: infoGalleryHeaderRef.value,
     start: 'bottom 17%',
