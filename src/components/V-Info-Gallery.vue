@@ -39,7 +39,7 @@ const slides = [
     image: InfoImage2,
     tooltips: [
       { text: 'Чистим', x: 67, y: 52, class: 'left' },
-      { text: 'Чистим', x: 45, y: 75 },
+      { text: 'Чистим', x: 45, y: 72 },
     ],
   },
 ];
