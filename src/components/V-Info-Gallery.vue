@@ -85,7 +85,10 @@ function pinVideo(func) {
 
   infoGallerySlidesRef.value.classList[func]('info-gallery__slides--fixed');
 
-  Flip.from(state, { ease: 'expo.out', duration: 0.75 });
+  Flip.from(state, { ease: 'expo.out', duration: 0.75 }).then(() => {
+    if (func === 'add')
+      gsap.to('.tooltip', { autoAlpha: 1, duration: 0.25, stagger: 0.065 });
+  });
 }
 
 onMounted(() => {
@@ -96,8 +99,6 @@ onMounted(() => {
     onEnter() {
       emitter.emit('gallery:fixed');
       pinVideo('add');
-
-      gsap.to('.tooltip', { autoAlpha: 1, stagger: 0.065 });
     },
     onLeaveBack() {
       gsap.to('.tooltip', { autoAlpha: 0 });
@@ -235,7 +236,7 @@ onMounted(() => {
     min-height: 100vh;
 
     @media screen and (max-width: 1100px) {
-      min-height: 75vh;
+      min-height: 85vh;
     }
   }
 }
