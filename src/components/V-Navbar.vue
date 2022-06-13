@@ -43,8 +43,8 @@ onMounted(() => {
   transitions.push(
     gsap.fromTo(
       '.toggle',
-      { outline: '1px solid transparent' },
-      { outline: '1px solid #E2E8F0', scrollTrigger }
+      { border: '1px solid transparent' },
+      { border: '1px solid #E2E8F0', scrollTrigger }
     )
   );
 

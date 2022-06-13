@@ -62,7 +62,7 @@ onMounted(() => {
   padding: 0.4rem 0.175rem;
 
   border-radius: 9999px;
-  outline-style: auto;
+  // outline-style: auto;
   background-color: #ffffff;
 
   &__text {
