@@ -41,6 +41,7 @@ onMounted(() => {
       [isSmallScreen() ? 'yPercent' : 'xPercent']: isSmallScreen() ? 100 : 0,
       ease: 'expo.out',
       duration: 0.75,
+      clearProps: 'yPercent, xPercent',
     });
 
   emitter.on('gallery:fixed', showMenu);
